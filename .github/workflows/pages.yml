@@ -37,7 +37,6 @@ jobs:
           icons() {
             echo "<link rel=\"icon\" href=\"$1favicon.ico\" sizes=\"32x32\"><link rel=\"icon\" href=\"$1favicon.svg\" type=\"image/svg+xml\"><link rel=\"apple-touch-icon\" href=\"$1apple-touch-icon.png\">"
           }
-          echo "<!doctype html><meta charset=\"utf-8\"><title>Neovim Essentials</title>$(icons '')<h1>Neovim Essentials</h1><ul>" > _site/index.html
           for dir in day-*/; do
             day="${dir%/}"
             nb=$(ls "$day"/*.ipynb 2>/dev/null | head -n 1)
@@ -47,9 +46,8 @@ jobs:
             sed -i "s|</head>|$(icons '../')</head>|" "_site/$day/index.html"
             python .github/scripts/add_toc.py "_site/$day/index.html"
             [ -d "$day/assets" ] && cp -r "$day/assets" "_site/$day/"
-            echo "<li><a href=\"$day/\">$day</a></li>" >> _site/index.html
           done
-          echo '</ul>' >> _site/index.html
+          python .github/scripts/build_index.py .github/site/index.html _site/index.html
 
       - uses: actions/upload-pages-artifact@v3
         with:
