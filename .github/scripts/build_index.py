@@ -86,12 +86,17 @@ def card(s):
         </li>"""
 
 
-def main(template_path, output_path):
+def find_sessions():
+    """Every day-NN/ folder (in the current directory) that has a notebook."""
     days = sorted(
         d for d in glob.glob("day-*")
         if os.path.isdir(d) and glob.glob(os.path.join(d, "*.ipynb"))
     )
-    sessions = [read_session(d) for d in days]
+    return [read_session(d) for d in days]
+
+
+def main(template_path, output_path):
+    sessions = find_sessions()
 
     with open(template_path, encoding="utf-8") as f:
         page = f.read()

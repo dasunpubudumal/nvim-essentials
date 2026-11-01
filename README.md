@@ -19,8 +19,12 @@ Everything for a day lives in that day's folder:
 ```
 nvim-essentials/
 ├── README.md
-├── .github/workflows/
-│   └── pages.yml           # Publishes the notebooks to GitHub Pages
+├── .github/
+│   ├── workflows/
+│   │   └── pages.yml       # Publishes the notebooks to GitHub Pages
+│   ├── scripts/            # Build the sessions page, theme the notebook pages, add contents lists
+│   └── site/               # Sessions page template and the shared Neovim theme (CSS)
+├── assets/                 # Favicons for the published site
 ├── day-01/
 │   ├── day-1.ipynb         # Day 1 notebook
 │   ├── Dockerfile          # Optional: a clean Neovim environment

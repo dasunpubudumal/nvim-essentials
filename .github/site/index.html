@@ -11,84 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="theme.css">
 <style>
-  :root {
-    --bg: #0b1117;
-    --bg-raised: #111a22;
-    --bg-bar: #17222d;
-    --border: #233140;
-    --text: #d7e0e8;
-    --muted: #7d8c99;
-    --faint: #3a4a59;
-    --green: #57a143;
-    --green-bright: #8fd16a;
-    --blue: #16b0ed;
-    --blue-deep: #0f59b2;
-    --amber: #e5b452;
-    --on-accent: #0b1117;
-    --glow-green: rgba(87, 161, 67, 0.18);
-    --glow-blue: rgba(22, 176, 237, 0.14);
-    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-    color-scheme: dark;
-  }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg: #f5f8f4;
-      --bg-raised: #ffffff;
-      --bg-bar: #eaf0e8;
-      --border: #d3ddd0;
-      --text: #1b2620;
-      --muted: #5b6b62;
-      --faint: #b5c2b8;
-      --green: #3f8a2e;
-      --green-bright: #2f7a1f;
-      --blue: #0d8ac0;
-      --blue-deep: #0f59b2;
-      --amber: #a6740f;
-      --on-accent: #ffffff;
-      --glow-green: rgba(87, 161, 67, 0.16);
-      --glow-blue: rgba(22, 176, 237, 0.12);
-      color-scheme: light;
-    }
-  }
-
-  * { box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body {
-    margin: 0;
-    min-height: 100vh;
-    background:
-      radial-gradient(60rem 30rem at 15% -10%, var(--glow-green), transparent 70%),
-      radial-gradient(50rem 30rem at 95% 10%, var(--glow-blue), transparent 70%),
-      var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    line-height: 1.55;
-    display: flex;
-    flex-direction: column;
-  }
-  a { color: inherit; }
-  code, kbd { font-family: var(--mono); }
-
-  /* ── Tabline ─────────────────────────────────────────── */
-  .tabline {
-    display: flex;
-    align-items: stretch;
-    font: 600 0.78rem var(--mono);
-    background: var(--bg-bar);
-    border-bottom: 1px solid var(--border);
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .tabline span { padding: 0.45rem 1rem; color: var(--muted); }
-  .tabline .active {
-    color: var(--text);
-    background: var(--bg);
-    box-shadow: inset 0 2px 0 var(--green);
-  }
-  .tabline .fill { flex: 1; }
-
   main {
     flex: 1;
     width: 100%;
@@ -167,18 +91,6 @@
   .section-head h2 { margin: 0; font-size: 1.35rem; letter-spacing: -0.01em; }
   .section-head h2 .hash { color: var(--green); font-family: var(--mono); margin-right: 0.3rem; }
   .hint { font: 0.8rem var(--mono); color: var(--muted); }
-  kbd {
-    display: inline-block;
-    min-width: 1.5em;
-    padding: 0.05rem 0.4rem;
-    font-size: 0.78rem;
-    text-align: center;
-    color: var(--text);
-    background: var(--bg-bar);
-    border: 1px solid var(--border);
-    border-bottom-width: 2px;
-    border-radius: 4px;
-  }
 
   /* ── Session cards (styled as Neovim windows) ────────── */
   .sessions {
@@ -251,35 +163,12 @@
     color: var(--muted);
   }
   .statusline > span { padding: 0.35rem 0.75rem; }
-  .mode { color: var(--on-accent); background: var(--green); letter-spacing: 0.05em; }
-  .mode.wip { background: var(--amber); }
   .statusline .spacer { flex: 1; }
-
-  /* ── Bottom statusline ───────────────────────────────── */
-  footer {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: stretch;
-    font: 600 0.78rem var(--mono);
-    background: var(--bg-bar);
-    border-top: 1px solid var(--border);
-    color: var(--muted);
-  }
-  footer > * { padding: 0.45rem 1rem; }
-  footer .mode { color: var(--on-accent); background: var(--blue-deep); }
-  footer .spacer { flex: 1; }
-  footer a { text-decoration: none; }
-  footer a:hover { color: var(--green-bright); }
 
   @media (max-width: 640px) {
     .hero { grid-template-columns: 1fr; gap: 1.5rem; padding-top: 2.5rem; text-align: left; }
     .hero-logo { width: 5rem; }
     .hint { display: none; }
-    footer .optional { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-    html { scroll-behavior: auto; }
   }
 </style>
 </head>
@@ -314,7 +203,7 @@
     </section>
   </main>
 
-  <footer>
+  <footer class="bottombar">
     <span class="mode">NORMAL</span>
     <span>⎇ main</span>
     <span class="optional">{{COUNT}} sessions</span>

@@ -29,24 +29,21 @@ jobs:
 
       # Each day-NN/ folder becomes _site/day-NN/index.html (served at /day-NN/),
       # with its assets/ copied alongside so relative image paths keep working.
+      # The pages are then themed, and the sessions page is built from them.
       - name: Convert notebooks to HTML
         run: |
           mkdir -p _site
           cp assets/favicon.svg assets/favicon.ico assets/apple-touch-icon.png _site/
-          # Favicon tags for a page; $1 is the path prefix back to the site root.
-          icons() {
-            echo "<link rel=\"icon\" href=\"$1favicon.ico\" sizes=\"32x32\"><link rel=\"icon\" href=\"$1favicon.svg\" type=\"image/svg+xml\"><link rel=\"apple-touch-icon\" href=\"$1apple-touch-icon.png\">"
-          }
+          cp .github/site/theme.css .github/site/notebook.css _site/
           for dir in day-*/; do
             day="${dir%/}"
             nb=$(ls "$day"/*.ipynb 2>/dev/null | head -n 1)
             [ -z "$nb" ] && continue
             mkdir -p "_site/$day"
             jupyter nbconvert --to html "$nb" --output-dir "_site/$day" --output index
-            sed -i "s|</head>|$(icons '../')</head>|" "_site/$day/index.html"
-            python .github/scripts/add_toc.py "_site/$day/index.html"
             [ -d "$day/assets" ] && cp -r "$day/assets" "_site/$day/"
           done
+          python .github/scripts/style_notebooks.py _site
           python .github/scripts/build_index.py .github/site/index.html _site/index.html
 
       - uses: actions/upload-pages-artifact@v3

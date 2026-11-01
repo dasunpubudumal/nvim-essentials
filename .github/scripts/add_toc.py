@@ -38,14 +38,11 @@ def build_toc(headings):
     return "\n".join(lines)
 
 
-def main(path):
-    with open(path, encoding="utf-8") as f:
-        html = f.read()
-
+def insert_toc(html):
     matches = list(HEADING.finditer(html))
     first = next((m for m in matches if m.group(1) == "2"), None)
     if first is None:
-        return
+        return html
 
     headings = [
         (m.group(1), m.group(2), TAG.sub("", ANCHOR.sub("", m.group(3))).strip())
@@ -53,10 +50,14 @@ def main(path):
         if m.start() >= first.start()
     ]
     first = first.start()
-    html = html[:first] + build_toc(headings) + "\n" + html[first:]
+    return html[:first] + build_toc(headings) + "\n" + html[first:]
 
+
+def main(path):
+    with open(path, encoding="utf-8") as f:
+        html = f.read()
     with open(path, "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(insert_toc(html))
 
 
 if __name__ == "__main__":
