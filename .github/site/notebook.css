@@ -266,6 +266,17 @@ main.nb-buffer {
 }
 .nb-buffer .jp-RenderedHTMLCommon img { max-width: 100%; height: auto; border-radius: 8px; }
 
+/* Diagrams drawn in dark ink on a transparent background (mark them with
+   class="diagram") sit on a light card in dark mode, so they stay readable. */
+@media not (prefers-color-scheme: light) {
+  .nb-buffer .jp-RenderedHTMLCommon img.diagram {
+    padding: 0.75rem;
+    background: #f4f6f1;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+}
+
 /* ── Table of contents (inserted by add_toc.py) ─────────── */
 .nb-buffer nav.toc {
   margin: 2rem 0 0;
