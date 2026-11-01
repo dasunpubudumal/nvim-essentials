@@ -7,10 +7,10 @@ A day-by-day series on getting started with [Neovim](https://neovim.io/). Each d
 
 ## Sessions
 
-| Day | Notebook | What it covers | Status |
-|---|---|---|---|
-| 1 | [`day-01/day-1.ipynb`](day-01/day-1.ipynb) | The mindset Neovim requires, installing it, and `:Tutor` (Lessons 1 and 2) | Available |
-| 2 | [`day-02/day-02.ipynb`](day-02/day-02.ipynb) | LazyVim, and hands-on work in a project | In progress |
+| Day | Read online | Notebook | What it covers | Status |
+|---|---|---|---|---|
+| 1 | [Day 1](https://dasunpubudumal.github.io/nvim-essentials/day-01/) | [`day-01/day-1.ipynb`](day-01/day-1.ipynb) | The mindset Neovim requires, installing it, and `:Tutor` (Lessons 1 and 2) | Available |
+| 2 | [Day 2](https://dasunpubudumal.github.io/nvim-essentials/day-02/) | [`day-02/day-02.ipynb`](day-02/day-02.ipynb) | LazyVim, and hands-on work in a project | In progress |
 
 ## File structure
 
@@ -19,6 +19,8 @@ Everything for a day lives in that day's folder:
 ```
 nvim-essentials/
 ├── README.md
+├── .github/workflows/
+│   └── pages.yml           # Publishes the notebooks to GitHub Pages
 ├── day-01/
 │   ├── day-1.ipynb         # Day 1 notebook
 │   ├── Dockerfile          # Optional: a clean Neovim environment
@@ -70,7 +72,17 @@ This opens JupyterLab in your browser. Use the file browser on the left to go to
 
 When you're done, press `Ctrl+C` twice in the terminal to stop Jupyter, and run `deactivate` to leave the virtual environment. Next time, you only need to run `source .venv/bin/activate` and `jupyter lab` again.
 
-> 💡 **Just want to read?** You can skip the setup and open the notebooks directly on GitHub using the links in the [Sessions](#sessions) table.
+## Reading online (GitHub Pages)
+
+If you just want to read, you can skip the setup. Every notebook is published as a web page on GitHub Pages, at:
+
+```
+https://dasunpubudumal.github.io/nvim-essentials/day-NN/
+```
+
+Replace `NN` with the two-digit day number. For example, Day 1 is at [dasunpubudumal.github.io/nvim-essentials/day-01](https://dasunpubudumal.github.io/nvim-essentials/day-01/). The [site's home page](https://dasunpubudumal.github.io/nvim-essentials/) lists every day, and the [Sessions](#sessions) table links to each one too.
+
+The pages are rebuilt on every push to `main` (see [`.github/workflows/pages.yml`](.github/workflows/pages.yml)), so a new `day-NN/` folder shows up online on its own a minute or two after it's pushed.
 
 ## Optional: a clean Neovim environment
 
