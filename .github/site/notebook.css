@@ -224,17 +224,24 @@ main.nb-buffer {
 .nb-buffer .jp-OutputArea-output pre { font-family: var(--mono); color: var(--text); }
 
 /* Tables, quotes, rules, images */
-.nb-buffer .jp-RenderedHTMLCommon table {
-  display: block;
-  max-width: 100%;
+/* style_notebooks.py wraps each table in .table-wrap: the wrapper carries the
+   border and scrolls sideways, so the table itself can stay a real table that
+   spans the full width. */
+.nb-buffer .jp-RenderedHTMLCommon .table-wrap {
   margin: 1.5rem 0;
   overflow-x: auto;
-  table-layout: auto;
-  font-size: 0.95rem;
   border: 1px solid var(--border);
   border-radius: 8px;
+}
+.nb-buffer .jp-RenderedHTMLCommon table {
+  width: 100%;
+  margin: 0;
+  table-layout: auto;
+  font-size: 0.95rem;
   color: var(--text);
 }
+/* Keep keys and commands like `<Space><Space>` on one line. */
+.nb-buffer .jp-RenderedHTMLCommon td code { white-space: nowrap; }
 .nb-buffer .jp-RenderedHTMLCommon :is(th, td) {
   padding: 0.6rem 0.9rem;
   text-align: left;

@@ -155,6 +155,8 @@ def style(page, sessions, i):
         1,
     )
     page = page.replace("</main>", pager(prev, nxt) + "</main>" + statusline(s) + SCRIPT, 1)
+    # Tables fill the page width; the wrapper scrolls sideways if one is too wide.
+    page = page.replace("<table>", '<div class="table-wrap"><table>').replace("</table>", "</table></div>")
     return insert_toc(page)
 
 
