@@ -3,7 +3,8 @@
 For every session's <site>/day-NN/index.html this sets a proper title, links
 the favicons, fonts, theme.css and notebook.css, inserts the table of contents,
 and wraps the notebook in Neovim-style chrome: a tabline of all sessions, a
-reading-progress bar, previous/next links, and a sticky statusline. j/k scroll,
+reading-progress bar, previous/next links, a sticky statusline, and an image
+viewer that opens a notebook image full size when clicked. j/k scroll,
 gg/G jump to the top/bottom, and H/L go to the previous/next session (as in
 LazyVim).
 
@@ -28,7 +29,11 @@ HEAD = """<link rel="icon" href="../favicon.ico" sizes="32x32">
 <link rel="stylesheet" href="../notebook.css">
 """
 
-SCRIPT = """<script>
+SCRIPT = """<dialog class="viewer" aria-label="Image viewer">
+  <figure><img alt=""><figcaption></figcaption></figure>
+  <p class="viewer-hint">Esc · q · click to close</p>
+</dialog>
+<script>
   (function () {
     var root = document.documentElement;
     var pos = document.querySelector(".bottombar .pos");
@@ -43,9 +48,39 @@ SCRIPT = """<script>
     addEventListener("resize", update);
     update();
 
+    // Image viewer: click (or Enter on) a notebook image to see it full size.
+    // Esc, q, or a click anywhere closes it. Linked images, badges, and images
+    // with class="no-zoom" (e.g. the title logo) are left alone.
+    var viewer = document.querySelector(".viewer");
+    var full = viewer.querySelector("img");
+    document.querySelectorAll(".nb-buffer .jp-RenderedHTMLCommon img").forEach(function (img) {
+      if (img.closest("a") || img.classList.contains("no-zoom") || /img\\.shields\\.io/.test(img.src)) return;
+      img.classList.add("zoomable");
+      img.tabIndex = 0;
+      img.setAttribute("role", "button");
+      img.addEventListener("click", function () { showImage(img); });
+      img.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showImage(img); }
+      });
+    });
+    function showImage(img) {
+      full.src = img.currentSrc || img.src;
+      // nbconvert fills in a placeholder alt for images that have none.
+      var caption = /^No description has been provided/.test(img.alt) ? "" : img.alt;
+      full.alt = caption;
+      full.className = img.classList.contains("diagram") ? "diagram" : "";
+      viewer.querySelector("figcaption").textContent = caption;
+      viewer.showModal();
+    }
+    viewer.addEventListener("click", function () { viewer.close(); });
+
     // Vim-style keys. "g" must be pressed twice (gg), like in Neovim.
     var lastG = 0;
     document.addEventListener("keydown", function (e) {
+      if (viewer.open) {
+        if (e.key === "q") viewer.close();
+        return;
+      }
       if (e.ctrlKey || e.metaKey || e.altKey || /input|textarea|select/i.test(e.target.tagName)) return;
       var step = 80, link;
       if (e.key === "j") scrollBy({ top: step });
