@@ -1,6 +1,7 @@
 """Dress each nbconvert page in the Neovim Essentials theme.
 
-For every session's <site>/day-NN/index.html this sets a proper title, links
+For every session's <site>/day-NN/index.html, and each extra page next to it
+(<site>/day-NN/<slug>.html, e.g. a session summary), this sets a proper title, links
 the favicons, fonts, theme.css and notebook.css, inserts the table of contents,
 and wraps the notebook in Neovim-style chrome: a tabline of all sessions, a
 reading-progress bar, previous/next links, a sticky statusline, and an image
@@ -100,20 +101,32 @@ SCRIPT = """<dialog class="viewer" aria-label="Image viewer">
 """
 
 
-def tabline(sessions, current):
+def tabline(sessions, current, extra=None):
     tabs = ['<nav class="tabline" aria-label="Sessions">', '<a href="../">sessions.md</a>']
     for s in sessions:
-        if s is current:
+        if s is current and extra is None:
             tabs.append(f'<span class="active" aria-current="page">{s["dir"]}</span>')
         else:
             tabs.append(f'<a href="../{s["dir"]}/">{s["dir"]}</a>')
+        if s is current:
+            # The session's extra pages get their own tabs, after the session's.
+            for e in s["extras"]:
+                if e is extra:
+                    tabs.append(f'<span class="active" aria-current="page">{e["slug"]}</span>')
+                else:
+                    tabs.append(f'<a href="{e["slug"]}.html">{e["slug"]}</a>')
     tabs.append('<span class="fill"></span><span>nvim-essentials</span></nav>')
     return "".join(tabs)
 
 
-def pager(prev, nxt):
+def pager(prev, nxt, up=None):
     links = []
-    if prev:
+    if up:
+        links.append(
+            f'<a class="prev" href="./"><small>← Day {up["number"]:02d} · H</small>'
+            f'<strong>{html.escape(up["title"])}</strong></a>'
+        )
+    elif prev:
         links.append(
             f'<a class="prev" href="../{prev["dir"]}/"><small>← Day {prev["number"]:02d} · H</small>'
             f'<strong>{html.escape(prev["title"])}</strong></a>'
@@ -128,12 +141,13 @@ def pager(prev, nxt):
     return f'<nav class="pager" aria-label="More sessions">{"".join(links)}</nav>'
 
 
-def statusline(s):
+def statusline(s, extra=None):
     mode = '<span class="mode wip">WIP</span>' if s["wip"] else '<span class="mode">NORMAL</span>'
+    page = extra or s
     return (
         f'<footer class="bottombar sticky">{mode}'
-        f'<span>{s["dir"]}/{html.escape(s["file"])}</span>'
-        f'<span class="optional">~{s["minutes"]} min read</span>'
+        f'<span>{s["dir"]}/{html.escape(page["file"])}</span>'
+        f'<span class="optional">~{page["minutes"]} min read</span>'
         '<span class="spacer"></span>'
         '<a href="../" class="optional">:sessions</a>'
         '<span class="optional">utf-8</span>'
@@ -141,20 +155,31 @@ def statusline(s):
     )
 
 
-def style(page, sessions, i):
+def link_notebooks(page, sessions, s):
+    """Point links to the repository's notebooks at their published pages."""
+    for t in sessions:
+        prefix = "" if t is s else f"../{t['dir']}/"
+        page = page.replace(f'href="{prefix}{t["file"]}"', f'href="../{t["dir"]}/"')
+        for e in t["extras"]:
+            page = page.replace(f'href="{prefix}{e["file"]}"', f'href="../{t["dir"]}/{e["slug"]}.html"')
+    return page
+
+
+def style(page, sessions, i, extra=None):
     s = sessions[i]
     prev = sessions[i - 1] if i > 0 else None
     nxt = sessions[i + 1] if i + 1 < len(sessions) else None
 
-    title = f"Day {s['number']:02d} · {s['title']} | Neovim Essentials"
+    title = f"Day {s['number']:02d} · {(extra or s)['title']} | Neovim Essentials"
     page = re.sub(r"<title>.*?</title>", lambda _: f"<title>{html.escape(title)}</title>", page, count=1, flags=re.S)
     page = page.replace("</head>", HEAD + "</head>", 1)
     page = page.replace(
         "<main>",
-        '<div class="progress" aria-hidden="true"></div>' + tabline(sessions, s) + '<main class="nb-buffer">',
+        '<div class="progress" aria-hidden="true"></div>' + tabline(sessions, s, extra) + '<main class="nb-buffer">',
         1,
     )
-    page = page.replace("</main>", pager(prev, nxt) + "</main>" + statusline(s) + SCRIPT, 1)
+    page = page.replace("</main>", pager(prev, nxt, s if extra else None) + "</main>" + statusline(s, extra) + SCRIPT, 1)
+    page = link_notebooks(page, sessions, s)
     # Tables fill the page width; the wrapper scrolls sideways if one is too wide.
     page = page.replace("<table>", '<div class="table-wrap"><table>').replace("</table>", "</table></div>")
     return insert_toc(page)
@@ -163,11 +188,13 @@ def style(page, sessions, i):
 def main(site_dir):
     sessions = find_sessions()
     for i, s in enumerate(sessions):
-        path = os.path.join(site_dir, s["dir"], "index.html")
-        with open(path, encoding="utf-8") as f:
-            page = f.read()
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(style(page, sessions, i))
+        pages = [("index", None)] + [(e["slug"], e) for e in s["extras"]]
+        for name, extra in pages:
+            path = os.path.join(site_dir, s["dir"], f"{name}.html")
+            with open(path, encoding="utf-8") as f:
+                page = f.read()
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(style(page, sessions, i, extra))
 
 
 if __name__ == "__main__":

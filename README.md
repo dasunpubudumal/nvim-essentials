@@ -10,6 +10,7 @@ A day-by-day series on getting started with [Neovim](https://neovim.io/). Each d
 | Day | Read online | Notebook | What it covers | Status |
 |---|---|---|---|---|
 | 1 | [Day 1](https://dasunpubudumal.github.io/nvim-essentials/day-01/) | [`day-01/day-1.ipynb`](day-01/day-1.ipynb) | The mindset Neovim requires, installing it, and `:Tutor` (Lessons 1 and 2) | Available |
+| 1 | [Summary](https://dasunpubudumal.github.io/nvim-essentials/day-01/summary-of-day-01-session.html) | [`day-01/Summary of Day 01 Session.ipynb`](day-01/Summary%20of%20Day%2001%20Session.ipynb) | Notes from the first tutoring session: outcomes, decisions, and the keys covered | Available |
 | 2 | [Day 2](https://dasunpubudumal.github.io/nvim-essentials/day-02/) | [`day-02/day-02.ipynb`](day-02/day-02.ipynb) | LazyVim, and hands-on work in a project | In progress |
 
 ## File structure
@@ -27,6 +28,7 @@ nvim-essentials/
 ├── assets/                 # Favicons for the published site
 ├── day-01/
 │   ├── day-1.ipynb         # Day 1 notebook
+│   ├── Summary of Day 01 Session.ipynb   # Notes from the Day 1 tutoring session
 │   ├── Dockerfile          # Optional: a clean Neovim environment
 │   ├── Dockerising.md      # How to build and run the Dockerfile
 │   └── assets/             # Images used by the Day 1 notebook
@@ -36,6 +38,7 @@ nvim-essentials/
 ```
 
 - Each new day gets its own `day-NN/` folder, with the number zero-padded so that the folders stay in order.
+- The day's main notebook is named `day-*.ipynb` and is published at `/day-NN/`. Any other notebook in the folder (e.g. a session summary) is published next to it, at `/day-NN/<name>.html`, with the name in lowercase and spaces turned into dashes.
 - A notebook's images go in the `assets/` folder next to it, and are referenced with relative paths (e.g., `assets/tutor.png`).
 
 ## Setup

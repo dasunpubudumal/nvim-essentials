@@ -4,7 +4,12 @@ Each day-NN/ folder with a notebook becomes a card. The card's title comes from
 the notebook's "Day N: ..." heading, its topics from the ## headings, and a
 heading starting with "TODO" marks the session as still in progress.
 
+The day's own notebook is the one named day-*.ipynb. Any other notebook in the
+folder (e.g. a session summary) is an extra page, published next to it as
+day-NN/<slug>.html, where the slug is the file name in lowercase with dashes.
+
 Usage: python build_index.py <template.html> <output.html>
+       python build_index.py --pages   (lists the notebooks to convert)
 """
 
 import glob
@@ -33,13 +38,28 @@ def headings(markdown):
         yield level, text.strip()
 
 
-def read_session(day_dir):
-    notebook = sorted(glob.glob(os.path.join(day_dir, "*.ipynb")))[0]
+def read_markdown(notebook):
     with open(notebook, encoding="utf-8") as f:
         cells = json.load(f)["cells"]
-    markdown = "\n\n".join(
+    return "\n\n".join(
         "".join(c["source"]) for c in cells if c["cell_type"] == "markdown"
     )
+
+
+def minutes(markdown):
+    words = len(TAG.sub(" ", markdown).split())
+    return max(1, round(words / WORDS_PER_MINUTE))
+
+
+def slug(notebook):
+    name = os.path.splitext(os.path.basename(notebook))[0]
+    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+
+
+def read_session(day_dir):
+    notebooks = sorted(glob.glob(os.path.join(day_dir, "*.ipynb")))
+    notebook = ([n for n in notebooks if os.path.basename(n).startswith("day-")] or notebooks)[0]
+    markdown = read_markdown(notebook)
 
     title, topics, wip = None, [], False
     for level, text in headings(markdown):
@@ -52,16 +72,26 @@ def read_session(day_dir):
         elif level == 2:
             topics.append(text)
 
-    words = len(TAG.sub(" ", markdown).split())
     number = int(re.search(r"\d+", os.path.basename(day_dir)).group())
+    extras = [
+        {
+            "file": os.path.basename(n),
+            "slug": slug(n),
+            "title": os.path.splitext(os.path.basename(n))[0],
+            "minutes": minutes(read_markdown(n)),
+        }
+        for n in notebooks
+        if n != notebook
+    ]
     return {
         "dir": os.path.basename(day_dir),
         "file": os.path.basename(notebook),
         "number": number,
         "title": title or f"Day {number}",
         "topics": topics,
-        "minutes": max(1, round(words / WORDS_PER_MINUTE)),
+        "minutes": minutes(markdown),
         "wip": wip,
+        "extras": extras,
     }
 
 
@@ -95,6 +125,14 @@ def find_sessions():
     return [read_session(d) for d in days]
 
 
+def list_pages():
+    """Print "notebook<TAB>day-dir<TAB>output-name" for every page to convert."""
+    for s in find_sessions():
+        print(f"{s['dir']}/{s['file']}\t{s['dir']}\tindex")
+        for e in s["extras"]:
+            print(f"{s['dir']}/{e['file']}\t{s['dir']}\t{e['slug']}")
+
+
 def main(template_path, output_path):
     sessions = find_sessions()
 
@@ -108,4 +146,7 @@ def main(template_path, output_path):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    if sys.argv[1:] == ["--pages"]:
+        list_pages()
+    else:
+        main(sys.argv[1], sys.argv[2])
