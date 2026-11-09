@@ -12,7 +12,7 @@ A day-by-day series on getting started with [Neovim](https://neovim.io/). Each d
 | 1 | [Day 1](https://dasunpubudumal.github.io/nvim-essentials/day-01/) | [`day-01/day-1.ipynb`](day-01/day-1.ipynb) | The mindset Neovim requires, installing it, and `:Tutor` (Lessons 1 and 2) | Available |
 | 1 | [Summary](https://dasunpubudumal.github.io/nvim-essentials/day-01/summary-of-day-01-session.html) | [`day-01/Summary of Day 01 Session.ipynb`](day-01/Summary%20of%20Day%2001%20Session.ipynb) | Notes from the first tutoring session: outcomes, decisions, and the keys covered | Available |
 | 2 | [Day 2](https://dasunpubudumal.github.io/nvim-essentials/day-02/) | [`day-02/day-02.ipynb`](day-02/day-02.ipynb) | Visual mode, netrw, LazyVim, and hands-on work in a project | Available |
-| 3 | — | — | Making the config yours: Lua basics, config layout, keymaps, options and plugins | In progress |
+| 3 | [Day 3](https://dasunpubudumal.github.io/nvim-essentials/day-03/) | [`day-03/day-03.ipynb`](day-03/day-03.ipynb) | Making the config yours: Lua basics, config layout, keymaps, options and plugins | In progress |
 
 ## File structure
 
@@ -33,9 +33,12 @@ nvim-essentials/
 │   ├── Dockerfile          # Optional: a clean Neovim environment
 │   ├── Dockerising.md      # How to build and run the Dockerfile
 │   └── assets/             # Images used by the Day 1 notebook
-└── day-02/
-    ├── day-02.ipynb        # Day 2 notebook
-    └── assets/             # Images used by the Day 2 notebook
+├── day-02/
+│   ├── day-02.ipynb        # Day 2 notebook
+│   └── assets/             # Images used by the Day 2 notebook
+└── day-03/
+    ├── day-03.ipynb        # Day 3 notebook
+    └── assets/             # Images used by the Day 3 notebook
 ```
 
 - Each new day gets its own `day-NN/` folder, with the number zero-padded so that the folders stay in order.
