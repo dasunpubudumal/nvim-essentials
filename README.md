@@ -14,6 +14,7 @@ A day-by-day series on getting started with [Neovim](https://neovim.io/). Each d
 | 2 | [Day 2](https://dasunpubudumal.github.io/nvim-essentials/day-02/) | [`day-02/day-02.ipynb`](day-02/day-02.ipynb) | Visual mode, netrw, LazyVim, and hands-on work in a project | Available |
 | 2 | [Summary](https://dasunpubudumal.github.io/nvim-essentials/day-02/summary-of-day-02-session.html) | [`day-02/summary-of-day-02-session.ipynb`](day-02/summary-of-day-02-session.ipynb) | Notes from the second tutoring session: installing LazyVim, adding LazyGit and oil.nvim, and the keys covered | Available |
 | 3 | [Day 3](https://dasunpubudumal.github.io/nvim-essentials/day-03/) | [`day-03/day-03.ipynb`](day-03/day-03.ipynb) | Making the config yours: Lua basics, config layout, keymaps, options and plugins | In progress |
+| 3 | [Summary](https://dasunpubudumal.github.io/nvim-essentials/day-03/summary-of-day-03-session.html) | [`day-03/summary-of-day-03-session.ipynb`](day-03/summary-of-day-03-session.ipynb) | Notes from the third tutoring session: installing LazyVim, adding LazyGit and oil.nvim, and the keys covered | Available |
 
 ## File structure
 
@@ -40,6 +41,7 @@ nvim-essentials/
 │   └── assets/             # Images used by the Day 2 notebook
 └── day-03/
     ├── day-03.ipynb        # Day 3 notebook
+    ├── summary-of-day-03-session.ipynb   # Notes from the Day 3 tutoring session
     └── assets/             # Images used by the Day 3 notebook
 ```
 
