@@ -8,6 +8,11 @@ The day's own notebook is the one named day-*.ipynb. Any other notebook in the
 folder (e.g. a session summary) is an extra page, published next to it as
 day-NN/<slug>.html, where the slug is the file name in lowercase with dashes.
 
+Standalone articles live outside the day-by-day sessions, one per folder:
+articles/<slug>/<notebook>.ipynb is published at articles/<slug>/ and listed
+in its own section on the sessions page. An article's title is its first
+# heading, and its topics are its ## headings.
+
 Usage: python build_index.py <template.html> <output.html>
        python build_index.py --pages   (lists the notebooks to convert)
 """
@@ -116,6 +121,76 @@ def card(s):
         </li>"""
 
 
+def read_article(article_dir):
+    notebook = sorted(glob.glob(os.path.join(article_dir, "*.ipynb")))[0]
+    markdown = read_markdown(notebook)
+
+    title, topics, wip = None, [], False
+    for level, text in headings(markdown):
+        if text.upper().startswith("TODO"):
+            wip = True
+        elif level == 1 and title is None:
+            title = text
+        elif level == 2:
+            topics.append(text)
+
+    name = os.path.basename(article_dir)
+    return {
+        "dir": f"articles/{name}",
+        "file": os.path.basename(notebook),
+        "slug": name,
+        "title": title or name.replace("-", " ").capitalize(),
+        "topics": topics,
+        "minutes": minutes(markdown),
+        "wip": wip,
+    }
+
+
+def find_articles():
+    """Every articles/<slug>/ folder (in the current directory) that has a notebook."""
+    dirs = sorted(
+        d for d in glob.glob(os.path.join("articles", "*"))
+        if os.path.isdir(d) and glob.glob(os.path.join(d, "*.ipynb"))
+    )
+    return [read_article(d) for d in dirs]
+
+
+def article_card(a):
+    shown = a["topics"][:MAX_TOPICS]
+    if len(a["topics"]) > MAX_TOPICS:
+        shown.append(f"…and {len(a['topics']) - MAX_TOPICS} more")
+    topics = "\n".join(f"                <li>{html.escape(t)}</li>" for t in shown)
+    mode = '<span class="mode wip">WIP</span>' if a["wip"] else '<span class="mode">READY</span>'
+    return f"""        <li>
+          <a class="card" href="{a['dir']}/">
+            <div class="winbar"><span class="dots"><i></i><i></i><i></i></span>{a['dir']}/{html.escape(a['file'])}</div>
+            <div class="buffer">
+              <p class="day-num">Article</p>
+              <h3>{html.escape(a['title'])}</h3>
+              <ul class="topics">
+{topics}
+              </ul>
+            </div>
+            <div class="statusline">{mode}<span class="spacer"></span><span>~{a['minutes']} min read</span><span>ipynb</span></div>
+          </a>
+        </li>"""
+
+
+def articles_section(articles):
+    if not articles:
+        return ""
+    cards = "\n".join(article_card(a) for a in articles)
+    return f"""    <section aria-labelledby="articles-title">
+      <div class="section-head">
+        <h2 id="articles-title"><span class="hash">##</span>Articles</h2>
+        <span class="hint">standalone reads, outside the day-by-day sessions</span>
+      </div>
+      <ul class="sessions">
+{cards}
+      </ul>
+    </section>"""
+
+
 def find_sessions():
     """Every day-NN/ folder (in the current directory) that has a notebook."""
     days = sorted(
@@ -131,6 +206,8 @@ def list_pages():
         print(f"{s['dir']}/{s['file']}\t{s['dir']}\tindex")
         for e in s["extras"]:
             print(f"{s['dir']}/{e['file']}\t{s['dir']}\t{e['slug']}")
+    for a in find_articles():
+        print(f"{a['dir']}/{a['file']}\t{a['dir']}\tindex")
 
 
 def main(template_path, output_path):
@@ -140,6 +217,7 @@ def main(template_path, output_path):
         page = f.read()
     page = page.replace("{{SESSIONS}}", "\n".join(card(s) for s in sessions))
     page = page.replace("{{COUNT}}", str(len(sessions)))
+    page = page.replace("{{ARTICLES}}", articles_section(find_articles()))
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(page)

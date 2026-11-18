@@ -9,6 +9,9 @@ viewer that opens a notebook image full size when clicked. j/k scroll,
 gg/G jump to the top/bottom, and H/L go to the previous/next session (as in
 LazyVim).
 
+Standalone articles (<site>/articles/<slug>/index.html) get the same chrome, with
+a tab of their own after the sessions and a pager that leads back to the list.
+
 Usage: python style_notebooks.py <site_dir>   (run from the repository root)
 """
 
@@ -18,16 +21,16 @@ import re
 import sys
 
 from add_toc import insert_toc
-from build_index import find_sessions
+from build_index import find_articles, find_sessions
 
-HEAD = """<link rel="icon" href="../favicon.ico" sizes="32x32">
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+HEAD = """<link rel="icon" href="{root}favicon.ico" sizes="32x32">
+<link rel="icon" href="{root}favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="{root}apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../theme.css">
-<link rel="stylesheet" href="../notebook.css">
+<link rel="stylesheet" href="{root}theme.css">
+<link rel="stylesheet" href="{root}notebook.css">
 """
 
 SCRIPT = """<dialog class="viewer" aria-label="Image viewer">
@@ -172,7 +175,7 @@ def style(page, sessions, i, extra=None):
 
     title = f"Day {s['number']:02d} · {(extra or s)['title']} | Neovim Essentials"
     page = re.sub(r"<title>.*?</title>", lambda _: f"<title>{html.escape(title)}</title>", page, count=1, flags=re.S)
-    page = page.replace("</head>", HEAD + "</head>", 1)
+    page = page.replace("</head>", HEAD.format(root="../") + "</head>", 1)
     page = page.replace(
         "<main>",
         '<div class="progress" aria-hidden="true"></div>' + tabline(sessions, s, extra) + '<main class="nb-buffer">',
@@ -185,8 +188,47 @@ def style(page, sessions, i, extra=None):
     return insert_toc(page)
 
 
+def style_article(page, sessions, a):
+    root = "../../"
+    title = f"{a['title']} | Neovim Essentials"
+    page = re.sub(r"<title>.*?</title>", lambda _: f"<title>{html.escape(title)}</title>", page, count=1, flags=re.S)
+    page = page.replace("</head>", HEAD.format(root=root) + "</head>", 1)
+    tabs = ['<nav class="tabline" aria-label="Sessions">', f'<a href="{root}">sessions.md</a>']
+    tabs += [f'<a href="{root}{s["dir"]}/">{s["dir"]}</a>' for s in sessions]
+    tabs.append(f'<span class="active" aria-current="page">{html.escape(a["slug"])}</span>')
+    tabs.append('<span class="fill"></span><span>nvim-essentials</span></nav>')
+    pager_nav = (
+        '<nav class="pager" aria-label="More sessions">'
+        f'<a class="next" href="{root}"><small>All sessions →</small><strong>Back to the list</strong></a></nav>'
+    )
+    mode = '<span class="mode wip">WIP</span>' if a["wip"] else '<span class="mode">NORMAL</span>'
+    status = (
+        f'<footer class="bottombar sticky">{mode}'
+        f'<span>{a["dir"]}/{html.escape(a["file"])}</span>'
+        f'<span class="optional">~{a["minutes"]} min read</span>'
+        '<span class="spacer"></span>'
+        f'<a href="{root}" class="optional">:sessions</a>'
+        '<span class="optional">utf-8</span>'
+        '<span class="pos">Top</span></footer>'
+    )
+    page = page.replace(
+        "<main>",
+        '<div class="progress" aria-hidden="true"></div>' + "".join(tabs) + '<main class="nb-buffer">',
+        1,
+    )
+    page = page.replace("</main>", pager_nav + "</main>" + status + SCRIPT, 1)
+    page = page.replace("<table>", '<div class="table-wrap"><table>').replace("</table>", "</table></div>")
+    return insert_toc(page)
+
+
 def main(site_dir):
     sessions = find_sessions()
+    for a in find_articles():
+        path = os.path.join(site_dir, a["dir"], "index.html")
+        with open(path, encoding="utf-8") as f:
+            page = f.read()
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(style_article(page, sessions, a))
     for i, s in enumerate(sessions):
         pages = [("index", None)] + [(e["slug"], e) for e in s["extras"]]
         for name, extra in pages:

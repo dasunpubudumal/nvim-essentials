@@ -15,6 +15,15 @@ A day-by-day series on getting started with [Neovim](https://neovim.io/). Each d
 | 2 | [Summary](https://dasunpubudumal.github.io/nvim-essentials/day-02/summary-of-day-02-session.html) | [`day-02/summary-of-day-02-session.ipynb`](day-02/summary-of-day-02-session.ipynb) | Notes from the second tutoring session: installing LazyVim, adding LazyGit and oil.nvim, and the keys covered | Available |
 | 3 | [Day 3](https://dasunpubudumal.github.io/nvim-essentials/day-03/) | [`day-03/day-03.ipynb`](day-03/day-03.ipynb) | Making the config yours: Lua basics, config layout, keymaps, options and plugins | In progress |
 | 3 | [Summary](https://dasunpubudumal.github.io/nvim-essentials/day-03/summary-of-day-03-session.html) | [`day-03/summary-of-day-03-session.ipynb`](day-03/summary-of-day-03-session.ipynb) | Notes from the third tutoring session: installing LazyVim, adding LazyGit and oil.nvim, and the keys covered | Available |
+| 4 | [Day 4](https://dasunpubudumal.github.io/nvim-essentials/day-04/) | [`day-04/day-04.ipynb`](day-04/day-04.ipynb) | Treesitter and LSPs in depth: how parsers, syntax trees and language servers work | In progress |
+
+## Articles
+
+Standalone reads that sit alongside the day-by-day sessions.
+
+| Article | Read online | Notebook | What it covers |
+|---|---|---|---|
+| Organising Project Workspaces | [Read](https://dasunpubudumal.github.io/nvim-essentials/articles/organising-project-workspaces/) | [`articles/organising-project-workspaces/organising-project-workspaces.ipynb`](articles/organising-project-workspaces/organising-project-workspaces.ipynb) | Keeping an editor, a terminal and an agent harness per project: `tmux` vs Kitty sessions, my Kitty kitten setup, and Ghostty |
 
 ## File structure
 
@@ -29,6 +38,10 @@ nvim-essentials/
 │   ├── scripts/            # Build the sessions page, theme the notebook pages, add contents lists
 │   └── site/               # Sessions page template and the shared Neovim theme (CSS)
 ├── assets/                 # Favicons for the published site
+├── articles/
+│   └── organising-project-workspaces/
+│       ├── organising-project-workspaces.ipynb   # A standalone article
+│       └── assets/         # Images used by the article
 ├── day-01/
 │   ├── day-1.ipynb         # Day 1 notebook
 │   ├── summary-of-day-01-session.ipynb   # Notes from the Day 1 tutoring session
@@ -39,14 +52,18 @@ nvim-essentials/
 │   ├── day-02.ipynb        # Day 2 notebook
 │   ├── summary-of-day-02-session.ipynb   # Notes from the Day 2 tutoring session
 │   └── assets/             # Images used by the Day 2 notebook
-└── day-03/
-    ├── day-03.ipynb        # Day 3 notebook
-    ├── summary-of-day-03-session.ipynb   # Notes from the Day 3 tutoring session
-    └── assets/             # Images used by the Day 3 notebook
+├── day-03/
+│   ├── day-03.ipynb        # Day 3 notebook
+│   ├── summary-of-day-03-session.ipynb   # Notes from the Day 3 tutoring session
+│   └── assets/             # Images used by the Day 3 notebook
+└── day-04/
+    ├── day-04.ipynb        # Day 4 notebook
+    └── assets/             # Images used by the Day 4 notebook
 ```
 
 - Each new day gets its own `day-NN/` folder, with the number zero-padded so that the folders stay in order.
 - The day's main notebook is named `day-*.ipynb` and is published at `/day-NN/`. Any other notebook in the folder (e.g. a session summary) is published next to it, at `/day-NN/<name>.html`, with the name in lowercase and spaces turned into dashes.
+- A standalone article gets its own `articles/<slug>/` folder with one notebook in it, and is published at `/articles/<slug>/`. Its title is the notebook's first `#` heading, and it is listed under **Articles** on the site's home page.
 - A notebook's images go in the `assets/` folder next to it, and are referenced with relative paths (e.g., `assets/tutor.png`).
 
 ## Setup
