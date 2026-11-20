@@ -273,6 +273,18 @@ main.nb-buffer {
 }
 .nb-buffer .jp-RenderedHTMLCommon img { max-width: 100%; height: auto; border-radius: 8px; }
 
+/* Embedded videos (e.g. YouTube iframes) scale to the column width at 16:9. */
+.nb-buffer .jp-RenderedHTMLCommon iframe {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin: 1rem auto;
+  border: 0;
+  border-radius: 8px;
+}
+
 /* Diagrams drawn in dark ink on a transparent background (mark them with
    class="diagram") sit on a light card in dark mode, so they stay readable. */
 @media not (prefers-color-scheme: light) {
