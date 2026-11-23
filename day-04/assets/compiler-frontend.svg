@@ -1,0 +1,64 @@
+<svg class="pipeline-diagram" height="190" viewBox="0 0 1030 190" width="1030" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow" markerHeight="8" markerWidth="8" orient="auto" refX="7" refY="4" viewBox="0 0 8 8"><path class="head" d="M0 0L8 4L0 8z" /></marker>
+</defs>
+<g transform="translate(.5 .5)">
+
+<!-- Stages -->
+<g class="input">
+<rect height="56" rx="10" ry="10" width="120" x="20" y="30"></rect>
+<text x="80" y="54">source code</text><text class="sub" x="80" y="73">characters</text></g>
+<path class="flow" d="M140 58h28" />
+
+<g class="treesitter">
+<rect height="56" width="180" x="170" y="30"></rect>
+<text x="260" y="54">lexical analysis</text><text class="sub" x="260" y="73">→ tokens</text></g>
+<path class="flow" d="M350 58h28" />
+
+<g class="treesitter">
+<rect height="56" width="180" x="380" y="30"></rect>
+<text x="470" y="54">syntactic analysis</text><text class="sub" x="470" y="73">→ syntax tree</text></g>
+<path class="flow" d="M560 58h28" />
+
+<g class="lsp">
+<rect height="56" width="180" x="590" y="30"></rect>
+<text x="680" y="54">semantic analysis</text><text class="sub" x="680" y="73">→ symbol table, types</text></g>
+<path class="flow" d="M770 58h28" />
+
+<g class="ir">
+<rect height="56" width="120" x="800" y="30"></rect>
+<text x="860" y="54">IR</text><text class="sub" x="860" y="73">→ simple steps</text></g>
+<path class="flow dashed" d="M920 58h28" />
+<text class="sub" style="text-anchor: start" x="954" y="62">backend</text>
+
+<!-- Who does what -->
+<path class="bracket" d="M170 98v10h390v-10M365 108v12" />
+<g class="treesitter">
+<rect height="26" rx="10" ry="10" width="120" x="305" y="120"></rect>
+<text x="365" y="138">Treesitter</text></g>
+<text class="note" x="365" y="168">the current buffer: its shape</text>
+
+<path class="bracket" d="M590 98v10h180v-10M680 108v12" />
+<g class="lsp">
+<rect height="26" rx="10" ry="10" width="160" x="600" y="120"></rect>
+<text x="680" y="138">language server</text></g>
+<text class="note" x="680" y="168">the whole project: its meaning</text>
+</g>
+<style>/* <![CDATA[ */
+
+svg.pipeline-diagram { background-color: #fdfdf8; }
+svg.pipeline-diagram path { stroke-width: 2; stroke: #333; fill: rgba(0,0,0,0); }
+svg.pipeline-diagram path.flow { marker-end: url(#arrow); }
+svg.pipeline-diagram path.dashed { stroke-dasharray: 4 4; }
+svg.pipeline-diagram path.head { fill: #333; stroke: none; }
+svg.pipeline-diagram text { font: bold 14px monospace; text-anchor: middle; fill: #222; }
+svg.pipeline-diagram text.sub { font: 12px monospace; fill: #444; }
+svg.pipeline-diagram text.note { font: italic 12px monospace; fill: #444; }
+svg.pipeline-diagram rect { stroke-width: 2; stroke: #333; }
+svg.pipeline-diagram g.input rect { fill: #fdfdf8; }
+svg.pipeline-diagram g.treesitter rect { fill: #d8f0cf; }
+svg.pipeline-diagram g.lsp rect { fill: #e6ecf7; }
+svg.pipeline-diagram g.ir rect { fill: #eeeeee; }
+
+/* ]]> */
+</style></svg>
