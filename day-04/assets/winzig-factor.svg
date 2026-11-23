@@ -3,20 +3,20 @@
 <g>
 <path d="M20 21v20m10 -20v20m-10 -10h20" /></g><path d="M40 31h10" /><g>
 <path d="M50 31h0.0" /><path d="M155.5 31h0.0" /><path d="M50.0 31h10" /><g class="non-terminal ">
-<path d="M60.0 31h3.0" /><path d="M142.5 31h3.0" /><rect height="22" width="79.5" x="63" y="20"></rect><text x="102.75" y="35">Primary</text></g><path d="M145.5 31h10" /><path d="M60.0 31a10 10 0 0 0 -10 10v10a10 10 0 0 0 10 10" /><g>
+<path d="M60.0 31h3.0" /><path d="M142.5 31h3.0" /><rect rx="6" ry="6" height="22" width="79.5" x="63" y="20"></rect><text x="102.75" y="35">Primary</text></g><path d="M145.5 31h10" /><path d="M60.0 31a10 10 0 0 0 -10 10v10a10 10 0 0 0 10 10" /><g>
 <path d="M60.0 61h0.0" /><path d="M145.5 61h0.0" /><path d="M60.0 61h20" /><g class="terminal ">
 <path d="M80.0 61h8.5" /><path d="M117.0 61h8.5" /><rect height="22" rx="10" ry="10" width="28.5" x="88.5" y="50"></rect><text x="102.75" y="65">*</text></g><path d="M125.5 61h20" /><path d="M60.0 61a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10" /><g class="terminal ">
 <path d="M80.0 91h8.5" /><path d="M117.0 91h8.5" /><rect height="22" rx="10" ry="10" width="28.5" x="88.5" y="80"></rect><text x="102.75" y="95">/</text></g><path d="M125.5 91a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10" /><path d="M60.0 61a10 10 0 0 1 10 10v40a10 10 0 0 0 10 10" /><g class="terminal ">
 <path d="M80.0 121h0.0" /><path d="M125.5 121h0.0" /><rect height="22" rx="10" ry="10" width="45.5" x="80" y="110"></rect><text x="102.75" y="125">and</text></g><path d="M125.5 121a10 10 0 0 0 10 -10v-40a10 10 0 0 1 10 -10" /><path d="M60.0 61a10 10 0 0 1 10 10v70a10 10 0 0 0 10 10" /><g class="terminal ">
 <path d="M80.0 151h0.0" /><path d="M125.5 151h0.0" /><rect height="22" rx="10" ry="10" width="45.5" x="80" y="140"></rect><text x="102.75" y="155">mod</text></g><path d="M125.5 151a10 10 0 0 0 10 -10v-70a10 10 0 0 1 10 -10" /></g><path d="M145.5 61a10 10 0 0 0 10 -10v-10a10 10 0 0 0 -10 -10" /></g><path d="M155.5 31h10" /><path d="M 165.5 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g><style>/* <![CDATA[ */
 
-svg.railroad-diagram { background-color: #fdfdf8; }
-svg.railroad-diagram path { stroke-width: 2; stroke: #333; fill: rgba(0,0,0,0); }
-svg.railroad-diagram text { font: bold 14px monospace; text-anchor: middle; fill: #222; }
-svg.railroad-diagram rect { stroke-width: 2; stroke: #333; }
-svg.railroad-diagram g.terminal rect { fill: #d8f0cf; }
-svg.railroad-diagram g.non-terminal rect { fill: #e6ecf7; }
-svg.railroad-diagram g.non-terminal text { font-style: italic; }
+svg.railroad-diagram { background-color: #ffffff; }
+svg.railroad-diagram path { stroke-width: 1.8; stroke: #475569; fill: rgba(0,0,0,0); stroke-linecap: round; stroke-linejoin: round; }
+svg.railroad-diagram text { font-family: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; font-weight: 600; text-anchor: middle; fill: #14532d; }
+svg.railroad-diagram rect { stroke-width: 1.5; }
+svg.railroad-diagram g.terminal rect { fill: #dcfce7; stroke: #16a34a; }
+svg.railroad-diagram g.non-terminal rect { fill: #dbeafe; stroke: #2563eb; }
+svg.railroad-diagram g.non-terminal text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 14px; fill: #1e3a8a; }
 
 /* ]]> */
 </style></svg>

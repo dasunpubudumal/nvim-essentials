@@ -1,64 +1,60 @@
-<svg class="pipeline-diagram" height="190" viewBox="0 0 1030 190" width="1030" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<marker id="arrow" markerHeight="8" markerWidth="8" orient="auto" refX="7" refY="4" viewBox="0 0 8 8"><path class="head" d="M0 0L8 4L0 8z" /></marker>
-</defs>
-<g transform="translate(.5 .5)">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1030 190" width="1030" height="190" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#475569"/>
+    </marker>
+    <style>
+      .lbl { font-size: 15px; font-weight: 600; fill: #0f172a; }
+      .sub { font-size: 13px; fill: #475569; }
+      .small { font-size: 12px; fill: #475569; }
+      .tag { font-size: 14px; font-weight: 600; }
+      .edge { stroke: #475569; stroke-width: 1.8; fill: none; }
+      .dashed { stroke-dasharray: 5 4; }
+      .bracket { stroke: #94a3b8; stroke-width: 1.5; fill: none; }
+      .input { fill: #f1f5f9; stroke: #64748b; stroke-width: 1.5; }
+      .ts { fill: #dcfce7; stroke: #16a34a; stroke-width: 2; }
+      .lsp { fill: #dbeafe; stroke: #2563eb; stroke-width: 2; }
+      .ir { fill: #f8fafc; stroke: #94a3b8; stroke-width: 1.5; }
+    </style>
+  </defs>
 
-<!-- Stages -->
-<g class="input">
-<rect height="56" rx="10" ry="10" width="120" x="20" y="30"></rect>
-<text x="80" y="54">source code</text><text class="sub" x="80" y="73">characters</text></g>
-<path class="flow" d="M140 58h28" />
+  <rect width="1030" height="190" fill="#ffffff"/>
 
-<g class="treesitter">
-<rect height="56" width="180" x="170" y="30"></rect>
-<text x="260" y="54">lexical analysis</text><text class="sub" x="260" y="73">→ tokens</text></g>
-<path class="flow" d="M350 58h28" />
+  <!-- Stages -->
+  <rect x="20" y="30" width="120" height="56" rx="10" class="input"/>
+  <text x="80" y="54" text-anchor="middle" class="lbl">source code</text>
+  <text x="80" y="74" text-anchor="middle" class="sub">characters</text>
+  <path d="M140 58H168" class="edge" marker-end="url(#arr)"/>
 
-<g class="treesitter">
-<rect height="56" width="180" x="380" y="30"></rect>
-<text x="470" y="54">syntactic analysis</text><text class="sub" x="470" y="73">→ syntax tree</text></g>
-<path class="flow" d="M560 58h28" />
+  <rect x="170" y="30" width="180" height="56" rx="10" class="ts"/>
+  <text x="260" y="54" text-anchor="middle" class="lbl">Lexical analysis</text>
+  <text x="260" y="74" text-anchor="middle" class="sub">→ tokens</text>
+  <path d="M350 58H378" class="edge" marker-end="url(#arr)"/>
 
-<g class="lsp">
-<rect height="56" width="180" x="590" y="30"></rect>
-<text x="680" y="54">semantic analysis</text><text class="sub" x="680" y="73">→ symbol table, types</text></g>
-<path class="flow" d="M770 58h28" />
+  <rect x="380" y="30" width="180" height="56" rx="10" class="ts"/>
+  <text x="470" y="54" text-anchor="middle" class="lbl">Syntactic analysis</text>
+  <text x="470" y="74" text-anchor="middle" class="sub">→ syntax tree</text>
+  <path d="M560 58H588" class="edge" marker-end="url(#arr)"/>
 
-<g class="ir">
-<rect height="56" width="120" x="800" y="30"></rect>
-<text x="860" y="54">IR</text><text class="sub" x="860" y="73">→ simple steps</text></g>
-<path class="flow dashed" d="M920 58h28" />
-<text class="sub" style="text-anchor: start" x="954" y="62">backend</text>
+  <rect x="590" y="30" width="180" height="56" rx="10" class="lsp"/>
+  <text x="680" y="54" text-anchor="middle" class="lbl">Semantic analysis</text>
+  <text x="680" y="74" text-anchor="middle" class="sub">→ symbol table, types</text>
+  <path d="M770 58H798" class="edge" marker-end="url(#arr)"/>
 
-<!-- Who does what -->
-<path class="bracket" d="M170 98v10h390v-10M365 108v12" />
-<g class="treesitter">
-<rect height="26" rx="10" ry="10" width="120" x="305" y="120"></rect>
-<text x="365" y="138">Treesitter</text></g>
-<text class="note" x="365" y="168">the current buffer: its shape</text>
+  <rect x="800" y="30" width="120" height="56" rx="10" class="ir"/>
+  <text x="860" y="54" text-anchor="middle" class="lbl">IR</text>
+  <text x="860" y="74" text-anchor="middle" class="sub">→ simple steps</text>
+  <path d="M920 58H948" class="edge dashed" marker-end="url(#arr)"/>
+  <text x="954" y="62" class="sub">backend</text>
 
-<path class="bracket" d="M590 98v10h180v-10M680 108v12" />
-<g class="lsp">
-<rect height="26" rx="10" ry="10" width="160" x="600" y="120"></rect>
-<text x="680" y="138">language server</text></g>
-<text class="note" x="680" y="168">the whole project: its meaning</text>
-</g>
-<style>/* <![CDATA[ */
+  <!-- Who does what -->
+  <path d="M170 98V108H560V98M365 108V120" class="bracket"/>
+  <rect x="300" y="120" width="130" height="30" rx="8" class="ts"/>
+  <text x="365" y="140" text-anchor="middle" class="tag" fill="#14532d">Treesitter</text>
+  <text x="365" y="172" text-anchor="middle" class="small">the current buffer: its shape</text>
 
-svg.pipeline-diagram { background-color: #fdfdf8; }
-svg.pipeline-diagram path { stroke-width: 2; stroke: #333; fill: rgba(0,0,0,0); }
-svg.pipeline-diagram path.flow { marker-end: url(#arrow); }
-svg.pipeline-diagram path.dashed { stroke-dasharray: 4 4; }
-svg.pipeline-diagram path.head { fill: #333; stroke: none; }
-svg.pipeline-diagram text { font: bold 14px monospace; text-anchor: middle; fill: #222; }
-svg.pipeline-diagram text.sub { font: 12px monospace; fill: #444; }
-svg.pipeline-diagram text.note { font: italic 12px monospace; fill: #444; }
-svg.pipeline-diagram rect { stroke-width: 2; stroke: #333; }
-svg.pipeline-diagram g.input rect { fill: #fdfdf8; }
-svg.pipeline-diagram g.treesitter rect { fill: #d8f0cf; }
-svg.pipeline-diagram g.lsp rect { fill: #e6ecf7; }
-svg.pipeline-diagram g.ir rect { fill: #eeeeee; }
-
-/* ]]> */
-</style></svg>
+  <path d="M590 98V108H770V98M680 108V120" class="bracket"/>
+  <rect x="600" y="120" width="160" height="30" rx="8" class="lsp"/>
+  <text x="680" y="140" text-anchor="middle" class="tag" fill="#1e3a8a">Language server</text>
+  <text x="680" y="172" text-anchor="middle" class="small">the whole project: its meaning</text>
+</svg>
