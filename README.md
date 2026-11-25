@@ -16,6 +16,7 @@ A day-by-day series on getting started with [Neovim](https://neovim.io/). Each d
 | 3 | [Day 3](https://dasunpubudumal.github.io/nvim-essentials/day-03/) | [`day-03/day-03.ipynb`](day-03/day-03.ipynb) | Making the config yours: Lua basics, config layout, keymaps, options and plugins | In progress |
 | 3 | [Summary](https://dasunpubudumal.github.io/nvim-essentials/day-03/summary-of-day-03-session.html) | [`day-03/summary-of-day-03-session.ipynb`](day-03/summary-of-day-03-session.ipynb) | Notes from the third tutoring session: installing LazyVim, adding LazyGit and oil.nvim, and the keys covered | Available |
 | 4 | [Day 4](https://dasunpubudumal.github.io/nvim-essentials/day-04/) | [`day-04/day-04.ipynb`](day-04/day-04.ipynb) | Treesitter and LSPs in depth: how parsers, syntax trees and language servers work | In progress |
+| 4 | [Summary](https://dasunpubudumal.github.io/nvim-essentials/day-04/summary-of-day-04-session.html) | [`day-04/summary-of-day-04-session.ipynb`](day-04/summary-of-day-04-session.ipynb) | Notes from the fourth tutoring session: terminals, workspaces, Claude CLI, Tree-sitter and LSPs | Available |
 
 ## Articles
 
@@ -58,6 +59,7 @@ nvim-essentials/
 │   └── assets/             # Images used by the Day 3 notebook
 └── day-04/
     ├── day-04.ipynb        # Day 4 notebook
+    ├── summary-of-day-04-session.ipynb   # Notes from the Day 4 tutoring session
     └── assets/             # Images used by the Day 4 notebook
 ```
 
